@@ -357,11 +357,29 @@ NSInteger const IQOptionalTextFieldIndex =  -1;
         _dismissToolbar.translucent = YES;
         [_dismissToolbar sizeToFit];
         UIBarButtonItem *buttonflexible = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
-        UIBarButtonItem *buttonDone = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(resignFirstResponder)];
-        [_dismissToolbar setItems:@[buttonflexible,buttonDone]];
+        UIBarButtonItem *buttonDone = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(doneClick:)];
+        
+        UIBarButtonItem *buttonCancel = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelClick:)];
+
+        
+        [_dismissToolbar setItems:@[buttonCancel,buttonflexible,buttonDone]];
     }
     
     return _dismissToolbar;
+}
+
+- (void)doneClick:(id)sender {
+    [self resignFirstResponder];
+    if (self.delegate && [self.delegate respondsToSelector:@selector(doneClick:)]) {
+        [self.delegate doneClick:self];
+    }
+}
+
+- (void)cancelClick:(id)sender {
+    [self resignFirstResponder];
+    if (self.delegate && [self.delegate respondsToSelector:@selector(cancelClick:)]) {
+        [self.delegate cancelClick:self];
+    }
 }
 
 #pragma mark - Setters
